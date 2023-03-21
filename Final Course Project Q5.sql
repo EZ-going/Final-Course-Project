@@ -1,9 +1,13 @@
 USE mavenfuzzyfactory;
 
 SELECT
-	YEAR(a.created_at) AS year,
+    YEAR(a.created_at) AS year,
     QUARTER(a.created_at) AS quarter,
-	SUM(CASE WHEN product_id = 1 THEN price_usd ELSE 0 END) AS og_mrfuzzy_revenue,
+    SUM(price_usd) AS total_revenue,
+    SUM(price_usd - cogs_usd) AS total_margin,
+    COUNT(DISTINCT order_id) AS total_sales,
+    
+    SUM(CASE WHEN product_id = 1 THEN price_usd ELSE 0 END) AS og_mrfuzzy_revenue,
     SUM(CASE WHEN product_id = 1 THEN price_usd - cogs_usd ELSE 0 END) AS og_mrfuzzy_margin,
     COUNT(DISTINCT CASE WHEN product_id = 1 THEN order_id ELSE NULL END) AS og_mrfuzzy_total_sales,
     
